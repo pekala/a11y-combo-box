@@ -40,9 +40,10 @@ const ComboBox: React.FC<ComboBoxProps> = ({
         >
           <input
             type="text"
-            aria-autocomplete="both"
+            aria-autocomplete="list"
             aria-controls={`${id}-listbox`}
             aria-labelledby={`${id}-label`}
+            aria-activedescendant={undefined}
             id={`${id}-input`}
           />
           <button
