@@ -1,16 +1,24 @@
 import * as React from "react";
 
 type ComboBoxProps = {
-  id: string;
+  id?: string;
   label: string;
   triggerLabel?: string;
 };
 
 const ComboBox: React.FC<ComboBoxProps> = ({
-  id,
+  id: customId,
   label,
   triggerLabel = "Show options"
 }) => {
+  const id = React.useMemo(
+    () =>
+      customId ||
+      Math.random()
+        .toString(36)
+        .substr(2, 15),
+    [customId]
+  );
   return (
     <>
       <label id={`${id}-label`}>{label}</label>

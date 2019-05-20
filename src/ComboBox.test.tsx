@@ -3,6 +3,6 @@ import ComboBox from "./ComboBox";
 
 describe("Combo Box", () => {
   it(`works`, () => {
-    expect(<ComboBox />).toBeInstanceOf(Object);
+    expect(<ComboBox label="Select Fruit" />).toBeInstanceOf(Object);
   });
 });
