@@ -1,16 +1,24 @@
 import * as React from "react";
 
+type Option = {
+  label: string;
+  id: string | number;
+  [key: string]: any;
+};
 type ComboBoxProps = {
   id?: string;
   label: string;
   triggerLabel?: string;
+  options?: Option[];
 };
 
 const ComboBox: React.FC<ComboBoxProps> = ({
   id: customId,
   label,
-  triggerLabel = "Show options"
+  triggerLabel = "Show options",
+  options = []
 }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
   const id = React.useMemo(
     () =>
       customId ||
@@ -25,7 +33,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
       <div>
         <div
           role="combobox"
-          aria-expanded={false}
+          aria-expanded={isOpen}
           aria-owns={`${id}-listbox`}
           aria-haspopup="listbox"
           id={`${id}-combobox`}
@@ -45,11 +53,19 @@ const ComboBox: React.FC<ComboBoxProps> = ({
             ⬇
           </button>
         </div>
-        <ul
-          aria-labelledby={`${id}-label`}
-          role="listbox"
-          id={`${id}-listbox`}
-        />
+        <ul aria-labelledby={`${id}-label`} role="listbox" id={`${id}-listbox`}>
+          {isOpen &&
+            options.map(option => (
+              <li
+                role="option"
+                aria-selected={false}
+                key={option.id}
+                id={`${id}-option-${option.id}`}
+              >
+                {option.label}
+              </li>
+            ))}
+        </ul>
       </div>
     </>
   );
