@@ -4,10 +4,15 @@ import ComboBox from "./ComboBox";
 
 import "./styles.css";
 
+const options = [
+  { label: "Banana", id: "banana" },
+  { label: "Pineapple", id: "pineapple" }
+];
+
 function App() {
   return (
     <div className="App">
-      <ComboBox label="Select Fruit" />
+      <ComboBox label="Select Fruit" options={options} />
     </div>
   );
 }

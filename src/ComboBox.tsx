@@ -27,6 +27,8 @@ const ComboBox: React.FC<ComboBoxProps> = ({
         .substr(2, 15),
     [customId]
   );
+  const onInputFocus = () => setIsOpen(true);
+  const onInputBlur = () => setIsOpen(false);
   return (
     <>
       <label id={`${id}-label`}>{label}</label>
@@ -45,6 +47,8 @@ const ComboBox: React.FC<ComboBoxProps> = ({
             aria-labelledby={`${id}-label`}
             aria-activedescendant={undefined}
             id={`${id}-input`}
+            onFocus={onInputFocus}
+            onBlur={onInputBlur}
           />
           <button
             id={`${id}-combobox-arrow`}
