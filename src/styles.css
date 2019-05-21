@@ -9,6 +9,7 @@
   font-size: 14px;
   position: relative;
   color: #333;
+  max-width: 300px;
 }
 
 .combobox label {
@@ -25,8 +26,8 @@
   transition: background-color 200ms ease-in-out;
 }
 
-.combobox > div:focus-within {
-  border-color: #27c17d;
+.combobox [role="combobox"]:focus-within {
+  border-color: #0074d9;
 }
 
 .combobox input {
@@ -40,7 +41,7 @@
   flex: 1;
 }
 
-.combobox input::focus {
+.combobox input:focus {
   outline: none;
 }
 
@@ -98,10 +99,10 @@
 }
 
 .combobox li[aria-selected="true"] {
-  background-color: #f5fcfa;
+  background-color: #7fdbff33;
 }
 
 .combobox li:hover {
   cursor: pointer;
-  background-color: #f5fcfa;
+  background-color: #7fdbff33;
 }
