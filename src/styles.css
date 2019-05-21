@@ -1,4 +1,107 @@
 .App {
   font-family: sans-serif;
-  text-align: center;
+  max-width: 500px;
+  padding: 20px;
+}
+
+.combobox {
+  font-family: sans-serif;
+  font-size: 14px;
+  position: relative;
+  color: #333;
+}
+
+.combobox label {
+  margin-bottom: 0.5em;
+  display: inline-block;
+}
+
+.combobox [role="combobox"] {
+  border-radius: 3px;
+  border: 1px solid #bac1c1;
+  background-color: white;
+  overflow: hidden;
+  display: flex;
+  transition: background-color 200ms ease-in-out;
+}
+
+.combobox > div:focus-within {
+  border-color: #27c17d;
+}
+
+.combobox input {
+  font-family: inherit;
+  color: inherit;
+  font-size: inherit;
+  border: none;
+  line-height: 3;
+  background-color: transparent;
+  padding: 0 1em;
+  flex: 1;
+}
+
+.combobox input::focus {
+  outline: none;
+}
+
+.combobox svg {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  height: 2em;
+  transform: rotate(0deg);
+  transition: transform 200ms ease-in-out;
+}
+
+.combobox [aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.combobox button {
+  border: none;
+  background: none;
+  padding: 0 1em;
+  margin-top: 3px; /* offset icon center of mass */
+  outline: none;
+  cursor: pointer;
+}
+
+.combobox ul {
+  border: 1px solid #bac1c1;
+  border-radius: 3px;
+  margin-top: 1px;
+  padding: 0;
+  max-height: 30em;
+  overflow-y: auto;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+}
+
+.combobox ul:empty {
+  border: none;
+}
+
+.combobox li {
+  list-style: none;
+  padding: 1em;
+  border-bottom: 1px solid #e3e6e6;
+  display: flex;
+  background-color: white;
+  font-family: sans-serif;
+}
+
+.combobox li:last-of-type {
+  border-bottom: 0;
+}
+
+.combobox li[aria-selected="true"] {
+  background-color: #f5fcfa;
+}
+
+.combobox li:hover {
+  cursor: pointer;
+  background-color: #f5fcfa;
 }

@@ -42,11 +42,13 @@ const ComboBox: React.FC<ComboBoxProps> = ({
 
   const onInputFocus = () => setIsOpen(true);
   const onInputBlur = () => setIsOpen(false);
+
   const onClickOption = (option: Option) => {
     changeValueAndNotify(option);
     setVisibleOptions([option]);
     setInputValue(option.label);
   };
+
   const onInputChange = e => {
     const nextInputValue = e.target.value;
 
@@ -61,7 +63,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
   };
 
   return (
-    <>
+    <div className="combobox">
       <label id={`${id}-label`}>{label}</label>
       <div>
         <div
@@ -90,7 +92,9 @@ const ComboBox: React.FC<ComboBoxProps> = ({
             tabIndex={-1}
             aria-label={triggerLabel}
           >
-            ⬇
+            <svg viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
           </button>
         </div>
         <ul aria-labelledby={`${id}-label`} role="listbox" id={`${id}-listbox`}>
@@ -108,7 +112,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
             ))}
         </ul>
       </div>
-    </>
+    </div>
   );
 };
 
