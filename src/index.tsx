@@ -6,7 +6,8 @@ import "./styles.css";
 
 const options = [
   { label: "Banana", id: "banana" },
-  { label: "Pineapple", id: "pineapple" }
+  { label: "Pineapple", id: "pineapple" },
+  { label: "Blueberry", id: "blueberry" }
 ];
 
 function App() {

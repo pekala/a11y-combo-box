@@ -23,6 +23,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
   const [isOpen, setIsOpen] = React.useState(false);
   const [selected, setSelected] = React.useState<Option | null>(null);
   const [inputValue, setInputValue] = React.useState("");
+  const [visibleOptions, setVisibleOptions] = React.useState(options);
   const id = React.useMemo(
     () =>
       customId ||
@@ -31,18 +32,34 @@ const ComboBox: React.FC<ComboBoxProps> = ({
         .substr(2, 15),
     [customId]
   );
-  const onInputFocus = () => setIsOpen(true);
-  const onInputBlur = () => setIsOpen(false);
-  const onClickOption = (option: Option) => {
+
+  const changeValueAndNotify = (option: Option | null) => {
     setSelected(option);
-    setInputValue(option.label);
     if (onChange) {
       onChange(option);
     }
   };
-  const onInputChange = e => {
-    setInputValue(e.target.value);
+
+  const onInputFocus = () => setIsOpen(true);
+  const onInputBlur = () => setIsOpen(false);
+  const onClickOption = (option: Option) => {
+    changeValueAndNotify(option);
+    setVisibleOptions([option]);
+    setInputValue(option.label);
   };
+  const onInputChange = e => {
+    const nextInputValue = e.target.value;
+
+    setInputValue(e.target.value);
+    const nextVisibleOptions = options.filter(
+      option =>
+        option.label.toLowerCase().indexOf(nextInputValue.toLowerCase()) === 0
+    );
+
+    setVisibleOptions(nextVisibleOptions);
+    changeValueAndNotify(nextVisibleOptions[0] || null);
+  };
+
   return (
     <>
       <label id={`${id}-label`}>{label}</label>
@@ -78,7 +95,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
         </div>
         <ul aria-labelledby={`${id}-label`} role="listbox" id={`${id}-listbox`}>
           {isOpen &&
-            options.map(option => (
+            visibleOptions.map(option => (
               <li
                 role="option"
                 aria-selected={!!selected && selected.id === option.id}
