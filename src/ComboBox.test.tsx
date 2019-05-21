@@ -46,4 +46,41 @@ describe("Combo Box", () => {
     expect(comboBox).toHaveAttribute("aria-expanded", "false");
     expect(listBox).toBeEmpty();
   });
+
+  it(`closes the dropdown, 
+      selects the option 
+      and triggers a callback 
+      when selecting an option in dropdown`, () => {
+    const onChange = jest.fn();
+    const utils = render(
+      <ComboBox
+        id="fruit"
+        label="Select Fruit"
+        options={options}
+        onChange={onChange}
+      />
+    );
+    const comboBox = utils.getByRole("combobox");
+    const listBox = utils.getByRole("listbox");
+    const input = utils.getByLabelText("Select Fruit");
+
+    userEvent.click(input);
+    userEvent.click(utils.getAllByRole("option")[0]);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(options[0]);
+    expect(input).toHaveAttribute(
+      "aria-activedescendant",
+      `fruit-option-${options[0].id}`
+    );
+    expect(input).toHaveAttribute("value", options[0].label);
+    expect(comboBox).toHaveAttribute("aria-expanded", "false");
+    expect(listBox).toBeEmpty();
+
+    userEvent.click(input);
+    expect(utils.getAllByRole("option")[0]).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+  });
 });
