@@ -24,6 +24,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
   const [selected, setSelected] = React.useState<Option | null>(null);
   const [inputValue, setInputValue] = React.useState("");
   const [visibleOptions, setVisibleOptions] = React.useState(options);
+
   const id = React.useMemo(
     () =>
       customId ||
@@ -40,26 +41,72 @@ const ComboBox: React.FC<ComboBoxProps> = ({
     }
   };
 
+  const onTriggerClick = () => setIsOpen(!isOpen);
   const onInputFocus = () => setIsOpen(true);
-  const onInputBlur = () => setIsOpen(false);
+  const onInputBlur = () => {
+    setIsOpen(false);
+    if (selected) {
+      setInputValue(selected.label);
+    } else {
+      setInputValue("");
+      setVisibleOptions(options);
+    }
+  };
 
   const onClickOption = (option: Option) => {
     changeValueAndNotify(option);
-    setVisibleOptions([option]);
     setInputValue(option.label);
+    setVisibleOptions([option]);
   };
 
   const onInputChange = e => {
     const nextInputValue = e.target.value;
 
-    setInputValue(e.target.value);
+    if (!nextInputValue) {
+      changeValueAndNotify(null);
+      setIsOpen(false);
+      setInputValue("");
+      setVisibleOptions(options);
+      return;
+    }
+
+    setInputValue(nextInputValue);
     const nextVisibleOptions = options.filter(
       option =>
         option.label.toLowerCase().indexOf(nextInputValue.toLowerCase()) === 0
     );
-
     setVisibleOptions(nextVisibleOptions);
     changeValueAndNotify(nextVisibleOptions[0] || null);
+  };
+
+  const onInputKeyDown = e => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      if (!isOpen) {
+        setIsOpen(true);
+      }
+      let nextOption;
+      if (!selected) {
+        nextOption =
+          visibleOptions[e.key === "ArrowDown" ? 0 : visibleOptions.length - 1];
+      } else {
+        const index = visibleOptions.indexOf(selected);
+        const offset = e.key === "ArrowDown" ? 1 : -1;
+        const n = visibleOptions.length;
+        nextOption = visibleOptions[(((index + offset) % n) + n) % n];
+      }
+      changeValueAndNotify(nextOption);
+      setInputValue(nextOption.label);
+    } else if (e.key === "Enter") {
+      setIsOpen(false);
+      if (selected) {
+        setVisibleOptions([selected]);
+        setInputValue(selected.label);
+      }
+    } else if (e.key === "Escape") {
+      setIsOpen(false);
+      changeValueAndNotify(null);
+      setInputValue("");
+    }
   };
 
   return (
@@ -86,11 +133,13 @@ const ComboBox: React.FC<ComboBoxProps> = ({
             onFocus={onInputFocus}
             onBlur={onInputBlur}
             onChange={onInputChange}
+            onKeyDown={onInputKeyDown}
           />
           <button
             id={`${id}-combobox-arrow`}
             tabIndex={-1}
             aria-label={triggerLabel}
+            onClick={onTriggerClick}
           >
             <svg viewBox="0 0 24 24">
               <polyline points="6 9 12 15 18 9" />

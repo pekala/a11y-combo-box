@@ -1,3 +1,13 @@
+html {
+  box-sizing: border-box;
+  background-color: #fff000;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 .App {
   font-family: sans-serif;
   max-width: 500px;
@@ -71,6 +81,7 @@
 
 .combobox ul {
   border: 1px solid #bac1c1;
+  background-color: white;
   border-radius: 3px;
   margin-top: 1px;
   padding: 0;
